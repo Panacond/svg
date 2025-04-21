@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    svg { border: 1px solid black; }
+  </style>
+</head>
+<body>
+
+<svg width="200" height="150">
+  <text id="dynamicText" x="20" y="50" font-size="20">Привіт!</text>
+  <rect id="dynamicRect" x="50" y="80" width="40" height="20" fill="lightgreen" />
+</svg>
+
+
+
+<script>
+  const dynamicTextElement = document.getElementById('dynamicText');
+  dynamicTextElement.textContent = "12";
+  const dynamicRectElement = document.getElementById('dynamicRect');
+  dynamicRectElement.setAttribute('width', 20);
+  dynamicRectElement.setAttribute('height', 50);
+
+</script>
+
+</body>
+</html>

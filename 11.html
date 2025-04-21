@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление SVG элемента через JS</title>
+    <style>
+        svg {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Добавление SVG элемента с помощью JavaScript</h1>
+
+    <p>Ниже находится SVG контейнер, в который элемент будет добавлен скриптом:</p>
+
+    <svg id="mySvgContainer" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="150" cy="100" r="50" fill="yellow" stroke="orange" stroke-width="3"/>
+    </svg>
+
+    <script>
+        // Получаем ссылку на SVG контейнер по его ID
+        const svgContainer = document.getElementById('mySvgContainer');
+
+        // Проверяем, найден ли контейнер
+        if (svgContainer) {
+            // Определяем пространство имен для SVG
+            const svgNS = "http://www.w3.org/2000/svg";
+
+            // Создаем новый SVG элемент <rect> с использованием пространства имен
+            const newRect = document.createElementNS(svgNS, 'rect');
+
+            // Устанавливаем атрибуты для прямоугольника
+            newRect.setAttribute('x', 10);
+            newRect.setAttribute('y', 10);
+            newRect.setAttribute('width', 100);
+            newRect.setAttribute('height', 100);
+            newRect.setAttribute('fill', 'lightblue');
+            newRect.setAttribute('stroke', 'blue');
+            newRect.setAttribute('stroke-width', 2);
+
+            // Добавляем созданный прямоугольник в SVG контейнер
+            svgContainer.appendChild(newRect);
+
+            console.log("Прямоугольник добавлен в SVG.");
+
+        } else {
+            console.error("SVG контейнер с ID 'mySvgContainer' не найден.");
+        }
+    </script>
+
+</body>
+</html>
