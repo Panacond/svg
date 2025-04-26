@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="1.1"
+    width="650px"
+    height="400px"
+    >
+    <defs>
+        <pattern patternUnits="userSpaceOnUse" width="10" height="10" x="0" y="0" patternTransform="rotate(00)"
+            id="hatch-1">
+            <line x1="0" y1="0" x2="0" y2="10" stroke="blue" stroke-width="1"></line>
+        </pattern>
+        <pattern patternUnits="userSpaceOnUse" width="20" height="20" x="0" y="0" patternTransform="rotate(45)"
+        id="hatch-2">
+        <line x1="0" y1="0" x2="0" y2="20" stroke="blue" stroke-width="1"></line>
+        <line x1="10" y1="0" x2="10" y2="2" stroke="blue" stroke-width="1"></line>
+        <line x1="10" y1="4" x2="10" y2="18" stroke="blue" stroke-width="0.5"></line>
+    </pattern>
+    </defs>
+    <path
+    d="M 100 100 h 100 0 v 100  h -100 Z"
+    fill="url(#hatch-1)" stroke="#001dbc"></path>
+
+    <path
+    d="M 300 100 h 100 0 v 100  h -100 Z"
+    fill="url(#hatch-2)" stroke="#001dbc"></path>
+    
+    </svg>
+</body>
+
+</html>
