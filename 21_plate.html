@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>plate</title>
+    <style>
+        @font-face {
+            font-family: 'GOST Type B';
+            src: url('./GOST_2.304_A.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+            /* Диапазон символов кириллицы */
+            font-display: swap;
+            /* Рекомендуется */
+        }
+
+        .line {
+            fill: none;
+            stroke: black;
+            stroke-width: 0.2mm;
+        }
+
+        .thin {
+            fill: none;
+            stroke: black;
+            stroke-width: 0.1mm;
+        }
+
+        .dim {
+            fill: none;
+            stroke: red;
+            stroke-width: 0.15mm;
+        }
+
+        .arrow {
+            fill: red;
+            stroke: red;
+            stroke-width: 0.15mm;
+        }
+
+        .text {
+            text-anchor: middle;
+            font-size: 0.3em;
+            /* font-family:Arial, Helvetica, sans-serif; */
+            /* font-family: 'Arial Condensed', Arial, sans-serif; */
+            font-family: 'GOST Type B', 'Arial', sans-serif;
+            letter-spacing: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="210mm" height="297mm" viewBox="0 0 210 297">
+        <g class="stamp">
+            <rect class="line" x="20" y="5" width="185" height="287" />
+            <rect class="line" x="0" y="0" width="210" height="297" />
+            <g transform="translate(20, 237)">
+                <rect class="line" x="0" y="0" width="185" height="55" />
+                <text x="120" y="10" text-anchor="middle" font-size="7">00-00-0000-КА</text>
+            </g>
+        </g>
+        <g id="detailKMD" transform="translate(20, 5)">
+            <g id="head">
+                <rect class="line" x="0" y="0" width="185" height="15" />
+                <path d="M 15 0 v15 m 55 0 v-15 m20 0 v15 m15 0 v-15 m0 7.5 h 35 m-20 0 v 7.5 m20 0 v-15 m20 0 v15"
+                    class="thin" />
+                <text x="7.5" y="8" class="text">№</text>
+                <text x="7.5" y="13" class="text">деталі</text>
+                <text x="45" y="10" class="text">переріз</text>
+                <text x="80" y="8" class="text">Довжина,</text>
+                <text x="80" y="13" class="text">мм</text>
+                <text x="98" y="8" class="text">Кіль-ть</text>
+                <text x="98" y="13" class="text">шт.</text>
+
+            </g>
+            <g class="row" transform="translate(0, 15)">
+                <rect class="line" x="0" y="0" width="185" height="8" />
+                <path d="M 15 0 v8 m 55 0 v-8 m20 0 v8 m15 0 v-8 m15 0 v 8 m20 0 v-8 m20 0 v8" class="thin" />
+                <text x="7.5" y="6" class="text">П1</text>
+                <text x="44" y="6" class="text">-5х50</text>
+                <text x="80" y="6" class="text">100</text>
+                <text x="98" y="6" class="text">3</text>
+            </g>
+
+
+        </g>
+        <g id="plan" transform="translate(50, 70)">
+            <rect class="line" x="0" y="0" width="100" height="50" />
+
+            <path d="M 20 20 l 30 0 " class="line" />
+            <path d="M 20 20 v10 h30 v-10" class="dim" />
+            <g>
+                <path d="M 20 32 v-2 l3 -1 v2 l-3 -1 " class="arrow" />
+                <path d="M 50 32 v-2 l-3 -1 v2 l3 -1 " class="arrow" />
+                <text x="35" y="29" text-anchor="middle" font-size="5">30</text>
+            </g>
+        </g>
+
+    </svg>
+</body>
+
+</html>
