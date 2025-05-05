@@ -4,113 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>plate</title>
-    <style>
-
-      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
-
-      @font-face {
-        font-family: "GOST Type B";
-        src: url("./GOST_2.304_A.ttf") format("truetype");
-        font-weight: 400;
-        font-style: normal;
-        unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-        /* Диапазон символов кириллицы */
-        font-display: swap;
-        /* Рекомендуется */
-      }
-
-
-      .axe {
-        fill: none;
-        stroke: red;
-        stroke-width: 0.1mm;
-        stroke-dasharray: 10, 2, 2, 2;
-      }
-      .hidden {
-        fill: none;
-        stroke: blue;
-        stroke-width: 0.1mm;
-        stroke-dasharray: 5, 2;
-      }
-
-      .line {
-        fill: none;
-        stroke: black;
-        stroke-width: 0.2mm;
-      }
-
-      .hatch {
-        fill: url(#hatch-1);
-        stroke: black;
-        stroke-width: 0.2mm;
-      }
-
-      .hatch2 {
-        fill: white;
-        stroke: black;
-        stroke-width: 0.2mm;
-      }
-
-      .thin {
-        fill: none;
-        stroke: black;
-        stroke-width: 0.1mm;
-      }
-
-      .dim {
-        fill: none;
-        stroke: red;
-        stroke-width: 0.15mm;
-      }
-
-      .arrow {
-        fill: red;
-        stroke: red;
-        stroke-width: 0.15mm;
-      }
-
-      .text {
-        text-anchor: middle;
-        font-size: 0.3em;
-        /* font-family:Arial, Helvetica, sans-serif; */
-        /* font-family: 'Arial Condensed', Arial, sans-serif; */
-        font-family: "Oswald","GOST Type B", "Arial", sans-serif;
-        letter-spacing: 0;
-      }
-
-      .scale1-2 {
-        transform: scale(0.5);
-      }
-
-      .scale1-2 .line,
-      .scale1-2 .hatch,
-      .scale1-2 .hatch2 {
-        stroke-width: calc(0.2mm * 2);
-        /* stroke: red;  */
-      }
-
-      .scale1-2 .dim,
-      .scale1-2 .axe,
-      .scale1-2 .hidden {
-        stroke-width: calc(0.1mm * 2);
-        /* stroke: red;  */
-      }
-      .scale1-2 text {
-        /* stroke-width: calc(0.2mm * 2); */
-        transform: scale(2);
-        fill: red;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
+    <script src="./designations.js"></script>
   </head>
 
   <body>
     <svg id="draw" width="210mm" height="297mm" viewBox="0 0 210 297">
       <defs>
         <symbol id="hole" class="scale1-2">
+          <g transform="translate(20, 20) ">
+            <circle class="line" r="5" cx="0" cy="0" />
+            <circle class="hidden" r="10" cx="0" cy="0" />
+            <path d="M0 -10 v20" class="axe" />
+            <path d="M-10 0 h20" class="axe" />
+          </g>
+          <g transform="translate(20, 20) rotate(-20)">
+            <path class="diametr" d="M-15 0 h45" />
+            <path class="arrow" d="m-5 0 l-6 -2 v4 z" />
+            <path class="arrow" d="M5 0 l6 -2 v4 z" />
+            <text x="20" y="-1" class="text">&#8960;10</text>
+          </g>
+        </symbol>
+        <symbol id="dimhole" class="scale1-2">
           <circle class="line" r="5" cx="10" cy="10" />
           <circle class="hidden" r="10" cx="10" cy="10" />
           <path d="M10 0 v20" class="axe" />
           <path d="M0 10 h20" class="axe" />
+          <g transform="translate(20, 20) rotate(-20)">
+            <path class="diametr" d="M-15 0 h45" />
+            <path class="arrow" d="m-5 0 l-6 -2 v4 z" />
+            <path class="arrow" d="M5 0 l6 -2 v4 z" />
+            <text x="20" y="-1" class="text">&#8960;10</text>
+          </g>
         </symbol>
       </defs>
 
@@ -140,68 +65,61 @@
         <rect class="line" x="0" y="0" width="210" height="297" />
         <g transform="translate(20, 237)">
           <rect class="line" x="0" y="0" width="185" height="55" />
-          <text x="120" y="10" text-anchor="middle" font-size="7">
+          <path
+            class="thin"
+            d="m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65"
+          />
+          <path
+            class="thin"
+            d="m7 0 v25 m10 -25 v55 m10 -55 v25 m10 -25 v55 m15 -55 v55 m13 -55 v55 "
+          />
+          <path
+            class="thin"
+            d="m65 10 h120 m0 15 h-120 m0 15 h120  m0 -10 h-50 m0 -5 v30 m15 -15 v-15 m15 0 v15"
+          />
+          <text x="130" y="7" text-anchor="middle" font-size="6">
             00-00-0000-КА
           </text>
-        </g>
-      </g>
-      <g id="detailKMD" transform="translate(20, 5)">
-        <g id="head">
-          <rect class="line" x="0" y="0" width="185" height="15" />
-          <path
-            d="M 15 0 v15 m 55 0 v-15 m20 0 v15 m15 0 v-15 m0 7.5 h 35 m-20 0 v 7.5 m20 0 v-15 m20 0 v15"
-            class="thin"
-          />
-          <text x="7.5" y="8" class="text">№</text>
-          <text x="7.5" y="13" class="text">деталі</text>
-          <text x="45" y="10" class="text">переріз</text>
-          <text x="80" y="8" class="text">Довжина,</text>
-          <text x="80" y="13" class="text">мм</text>
-          <text x="98" y="8" class="text">Кіль-ть</text>
-          <text x="98" y="13" class="text">шт.</text>
-          <text x="112" y="13" class="text">1 елем.</text>
-          <text x="130" y="13" class="text">всіх елем.</text>
-          <text x="125" y="5" class="text">Маса, кг</text>
-          <text x="151" y="5" class="text">
-            <tspan x="151" dy="0">найменув.</tspan>
-            <tspan x="151" dy="4">або марка</tspan>
-            <tspan x="151" dy="4">металу</tspan>
-           </text>
-          <text x="173" y="8" class="text">Примітка</text>
+          <text x="3.5" y="24" class="stamp">Зм.</text>
+          <text x="12" y="24" class="stamp">Кільк.</text>
+          <text x="22" y="24" class="stamp">Арк.</text>
+          <text x="32" y="24" class="stamp">№док.</text>
+          <text x="44" y="24" class="stamp">Підпис</text>
+          <text x="58" y="24" class="stamp">Дата</text>
+          <text x="8" y="29" class="stamp">Розробив</text>
+          <text x="8" y="34" class="stamp">Перевірив</text>
+          <text x="8" y="39" class="stamp">Т. контр.</text>
+          <text x="8" y="49" class="stamp">Н. контр.</text>
+          <text x="8" y="54" class="stamp">Затвердив.</text>
+          <text x="142" y="29" class="stamp">Стадія</text>
+          <text x="157" y="29" class="stamp">Аркуш</text>
+          <text x="174" y="29" class="stamp">Аркушів</text>
 
-        </g>
-        <g class="row" transform="translate(0, 15) ">
-          <rect class="line" x="0" y="0" width="185" height="8" />
-          <path
-            d="M 15 0 v8 m 55 0 v-8 m20 0 v8 m15 0 v-8 m15 0 v 8 m20 0 v-8 m20 0 v8"
-            class="thin"
-          />
-          <text x="7.5" y="6" class="text">П1</text>
-          <text x="44" y="6" class="text">-5х50</text>
-          <text x="80" y="6" class="text">100</text>
-          <text x="98" y="6" class="text">3</text>
-          <text x="112" y="6" class="text">3.14</text>
-          <text x="130" y="6" class="text">6.28</text>
-          <text x="150" y="6" class="text">С235</text>
         </g>
       </g>
       <g class="scale1-2">
-        
         <g id="plan" transform="translate(100, 140)">
-          <text x="50" y="-10" class="text">Деталь П1</text>
-          <rect class="line" x="0" y="0" width="200" height="100" />
+          <text x="100" y="-10" class="text">Деталь П1</text>
+          <rect
+            data-mark-det="П1"
+            class="line C235 t5"
+            x="0"
+            y="0"
+            width="200"
+            height="100"
+          />
 
-          <use href="#hole" x="10" y="10" viewBox="-10 -10 10 10" />
-          <use href="#hole" x="10" y="70" viewBox="-10 -10 10 10" />
-          <use href="#hole" x="170" y="70" viewBox="-10 -10 10 10" />
-          <use href="#hole" x="170" y="10" viewBox="-10 -10 10 10" />
+          <use href="#hole" x="0" y="0" viewBox="-10 -10 10 10" />
+          <use href="#hole" x="0" y="60" viewBox="-10 -10 10 10" />
+          <use href="#hole" x="160" y="60" viewBox="-10 -10 10 10" />
+          <use href="#hole" x="160" y="0" viewBox="-10 -10 10 10" />
 
-          <path class="dim" d="M0 0 v100 h-15" />
-          <path class="dim" d="M0 100 h200 v15" />
+          <path class="dim" d="M0 0 v100 h-25" />
+          <path class="dim" d="M0 100 h200 v25" />
         </g>
 
         <g id="section" transform="translate(100, 340)">
-          <text x="50" y="-10" class="text">1-1</text>
+          <text x="100" y="-10" class="text">1-1</text>
           <rect class="hatch" x="0" y="0" width="200" height="5" />
 
           <path class="hatch2" d="M 20 0 h-10 l5 5 h10 l 5 -5 z" />
@@ -210,127 +128,14 @@
             d="M 180 0 h-10 l5 5 h10 l 5 -5 z"
             class="line"
           />
-          <path class="dim" d="M0 0 v100 h-15" />
-          
+          <path class="dim" d="M0 5 h20 V-20" />
+          <path class="dim" d="M180 5 h20 V-20" />
+
+          <path class="dim" d="M0 0 h200 V-45" />
         </g>
       </g>
-
     </svg>
 
-    <script>
-
-
-      function parseDim(pathData) {
-        // const pathData = "M20 20 v50 h-15";
-        const result = {};
-        const commands = [];
-
-        const moveCommandRegex = /^M([\d\.\-]+)\s+([\d\.\-]+)/i;
-        const lineCommandRegex = /([vhl])([\d\.\-]+)/gi;
-
-        const moveMatch = pathData.match(moveCommandRegex);
-        if (moveMatch) {
-          result.x = parseFloat(moveMatch[1]);
-          result.y = parseFloat(moveMatch[2]);
-        }
-
-        let match;
-        while ((match = lineCommandRegex.exec(pathData)) !== null) {
-          const type = match[1].toLowerCase();
-          const length = parseFloat(match[2]);
-          let indent = 0;
-          if (type === "h" && length < 0) {
-            indent = length;
-          } else if (type === "v" && length < 0) {
-            indent = length;
-          }
-
-          commands.push({
-            type: type,
-            length: Math.abs(length),
-          });
-        }
-        data = { x: result.x, y: result.y, c: commands };
-        return data;
-      }
-
-      function replaceSquaresWithColoredTriangles() {
-        const svgContainer = document.getElementsByTagName("svg")[0];
-
-        const dimentions = document.querySelectorAll(".dim");
-
-        dimentions.forEach((dim) => {
-          const parentElement = dim.parentNode;
-          const scale= processElement(dim)
-
-          const d = dim.getAttribute("d");
-          console.log(d);
-
-          const data = parseDim(d);
-          const angle = data.c[0].type === "v" ? 90 : 0;
-          const triangleHTML = `<g transform="rotate(${angle},${data.x},${
-            data.y
-          } )">
-          <path d="M ${data.x} ${data.y} v${data.c[1].length + 2} v-2 h${
-            data.c[0].length
-          } v2 v${-data.c[1].length - 2}" class="dim"/>
-          <path class="anno" d="M ${data.x} ${
-            data.y + data.c[1].length
-          } l4 1 v-2 z" fill="red" transform="scale(${scale})"
-           transform-origin="${data.x} ${data.y + data.c[1].length}"/>
-          <path class="anno" d="M ${data.x + data.c[0].length} ${
-            data.y + data.c[1].length
-          } l-4 1 v-2 z" fill="red" transform="scale(${scale})"
-           transform-origin="${data.x + data.c[0].length} ${data.y + data.c[1].length}" ;/>/>
-          <text class="text" id="dynamicText" x="${
-            data.x + data.c[0].length / 2
-          }" y="${data.y + data.c[1].length - 2*scale}">${
-            data.c[0].length
-          }</text></g>`;
-
-          // // Додаємо новий трикутник перед видаленням квадрата (для збереження порядку, якщо це важливо)
-          parentElement.insertAdjacentHTML("beforeend", triangleHTML);
-          dim.remove();
-        });
-      }
-
-      document.addEventListener(
-        "DOMContentLoaded",
-        replaceSquaresWithColoredTriangles
-      );
-
-      
-
-      function processElement(element) {
-        let currentElement = element.parentNode;
-        const parentClasses = [];
-
-        while (currentElement) {
-          if (currentElement.classList && currentElement.classList.length > 0) {
-            parentClasses.push(...currentElement.classList);
-          }
-          currentElement = currentElement.parentNode;
-        }
-
-        const regex = /(scale)(\d+)-(\d+)/;
-        const match = parentClasses.join(", ").match(regex);
-        let scale;
-
-        if (match) {
-          const scaleFull = match[0];
-          const scaleStart = match[2];
-          const scaleEnd = match[3];
-          scale = match[3] / match[2];
-
-          console.log("Полное совпадение:", scaleFull);
-          console.log("scale:", scale);
-        } else {
-          console.log("Совпадений не найдено.");
-          scale = 1;
-        }
-        return scale;
-      }
-    </script>
-
+    <script></script>
   </body>
 </html>

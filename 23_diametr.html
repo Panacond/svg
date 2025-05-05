@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>diametr</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="./designations.js"></script>
+  </head>
+  <body>
+    <svg id="draw" width="210mm" height="290mm" viewBox="0 0 210 290">
+      <defs>
+        <symbol id="hole1-2" class="scale1-2">
+          <circle class="line" r="5" cx="10" cy="10" />
+          <circle class="hidden" r="10" cx="10" cy="10" />
+          <path d="M10 0 v20" class="axe" />
+          <path d="M0 10 h20" class="axe" />
+        </symbol>
+      </defs>
+      <defs>
+        <symbol id="hole1-1" class="scale1-1">
+          <circle class="line" r="5" cx="10" cy="10" />
+          <circle class="hidden" r="10" cx="10" cy="10" />
+          <path d="M10 0 v20" class="axe" />
+          <path d="M0 10 h20" class="axe" />
+        </symbol>
+      </defs>
+
+      <g class="scale1-1" transform="translate(30, 00)">
+        <text x="70" y="10" class="text">Деталь П1</text>
+        <rect class="line" x="20" y="20" width="100" height="50" />
+        <use href="#hole1-1" x="60" y="35" viewBox="-10 -10 10 10" />
+        <path class="dim" d="M20 20 v50 h-15" />
+        <path class="dim" d="M20 70 h100 v15" />
+        <path class="dim" d="M65 45 h10 v20" />
+        <g transform="translate(70, 45) rotate(-20)">
+          <path class="diametr" d="M-10 0 h30" />
+          <path class="arrow" d="m-5 0 l-3 -1 v2 z" />
+          <path class="arrow" d="M5 0 l3 -1 v2 z" />
+          <text x="15" y="-1" class="text">&#8960;10</text>
+        </g>
+        <g transform="translate(70, 45) rotate(20)">
+          <path class="diametr" d="M-15 0 h40" />
+          <path class="arrow" d="m-9 0 l-3 -1 v2 z" />
+          <path class="arrow" d="M9 0 l3 -1 v2 z" />
+          <text x="20" y="-1" class="text">&#8960;10</text>
+        </g>
+        <g transform="translate(110, 25)">
+          <path class="diametr" d="M0 0 l10 -10 h20" />
+          <text x="10" y="-11" class="extension">Поз.1</text>
+          <text x="10" y="-5" class="extension">крок 120</text>
+        </g>
+        <path
+          class="designation"
+          d="M110 50 l-10 10"
+          data-text-up="Поз.16"
+          data-text-down="крок 40"
+          data-length="-20"
+        />
+
+        <path
+        class="designation"
+        d="M110 30 l10 10"
+        data-text-up="Поз.16"
+        data-text-down="крок 40"
+        data-length="20"
+      />
+      </g>
+
+      <g class="scale1-2">
+        <g class="plan">
+          <g id="plan" transform="translate(100, 200)">
+            <text x="100" y="-10" class="text">Деталь П1</text>
+            <rect class="line" x="0" y="0" width="200" height="100" />
+            <use href="#hole1-2" x="90" y="40" viewBox="-10 -10 10 10" />
+
+            <path class="dim" d="M0 0 v100 h-45" />
+            <path class="dim" d="M100 0 v50 h-120" />
+            <path class="dim" d="M0 100 h200 v45" />
+            <path class="dim" d="M0 50 h100 v75" />
+            <g transform="translate(100, 50) rotate(-20)">
+              <path class="diametr" d="M-15 0 h45" />
+              <path class="arrow" d="m-5 0 l-6 -2 v4 z" />
+              <path class="arrow" d="M5 0 l6 -2 v4 z" />
+              <text x="20" y="-1" class="text">&#8960;10</text>
+            </g>
+          </g>
+        </g>
+      </g>
+
+      <g transform="translate(50, 200)">
+        <g class="scale1-1">
+          <text x="50" y="-20" class="text">Деталь 60</text>
+          <rect class="line" x="00" y="00" width="100" height="5" />
+          <path class="dim" d="M00 0 v5 h-15" />
+          <path class="dim" d="M00 5 h100 v15" />
+          <path class="line" d="m40 0 l5 5 h10 l5-5" />
+          <g class="deg">
+            <g transform="translate(40, 0) rotate(-45)">
+              <path class="arrow" d="M0 0 v-10" />
+              <path class="arrow" d="M0 -7 l3 1 v-2" />
+            </g>
+            <g transform="translate(60, 0) rotate(45)">
+              <path class="arrow" d="M0 0 v-10" />
+              <path class="arrow" d="M0 -7 l-3 1 v-2" />
+            </g>
+            <path class="diametr" d="M35 -5 a20 20 0 0 1 30 0" />
+            <text x="50" y="-13" class="text">90&deg;</text>
+          </g>
+        </g>
+      </g>
+    </svg>
+
+    <script>
+      function parsePathD(dString) {
+        const commands = dString.match(/([MLml])\s*([^MLml]*)/g);
+        if (!commands) {
+          return null; // Или выбросить ошибку, если формат строки всегда ожидается
+        }
+
+        const result = {};
+        const firstCommand = commands[0].trim().charAt(0).toUpperCase(); // Получаем первую команду (M)
+
+        if (firstCommand === "M") {
+          const numbers = commands[0]
+            .trim()
+            .substring(1)
+            .trim()
+            .split(/\s*,\s*|\s+/)
+            .map(Number);
+          if (numbers.length >= 2) {
+            result.x = numbers[0];
+            result.y = numbers[1];
+          }
+        }
+
+        // Проверяем наличие второй команды (l)
+        if (commands.length > 1) {
+          const secondCommand = commands[1].trim().charAt(0).toLowerCase();
+          if (secondCommand === "l") {
+            const numbers = commands[1]
+              .trim()
+              .substring(1)
+              .trim()
+              .split(/\s*,\s*|\s+/)
+              .map(Number);
+            if (numbers.length >= 2) {
+              result.dx = numbers[0];
+              result.dy = numbers[1];
+            }
+          }
+        }
+
+        return result;
+      }
+
+      const svgContainer = document.getElementsByTagName("svg")[0];
+      const designations = document.querySelectorAll(".designation");
+
+      designations.forEach((designation) => {
+        const parentElement = designation.parentNode;
+        const textUp = designation.dataset.textUp;
+        const textDown = designation.dataset.textDown;
+        const length = designation.dataset.length;
+        const d = designation.getAttribute("d");
+        const vars = parsePathD(d);
+        console.log("Значение textUp:", textUp);
+        console.log("Значение textDown:", textDown);
+        console.log("Значение length:", length);
+        const className = length > 0  ? "extension" : "mirror";
+        const add = length > 0  ? 3 : -3;
+        const triangleHTML = `<g transform="translate(${vars.x}, ${vars.y})">
+          <path class="diametr" d="M0 0 l${vars.dx} ${vars.dy} h${length}" />
+          <text x="${vars.dx + add}" y="${
+          vars.dy - 1
+        }" class="${className}">${textUp}</text>
+          <text x="${vars.dx + add}" y="${
+          vars.dy + 5
+        }" class="${className}">${textDown}</text>
+        </g>`;
+        parentElement.insertAdjacentHTML("beforeend", triangleHTML);
+        designation.remove();
+      });
+    </script>
+  </body>
+</html>

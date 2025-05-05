@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
 
       @font-face {
         font-family: "GOST Type B";
@@ -17,7 +17,7 @@
         font-display: swap;
         /* Рекомендуется */
       }
-      .gost{
+      .gost {
         text-anchor: middle;
         font-size: 3em;
         /* font-family:Arial, Helvetica, sans-serif; */
@@ -25,7 +25,7 @@
         font-family: "GOST Type B", "Arial", sans-serif;
         letter-spacing: 0;
       }
-      .osvl{
+      .osvl {
         text-anchor: middle;
         font-size: 3em;
         /* font-family:Arial, Helvetica, sans-serif; */
@@ -34,9 +34,66 @@
         letter-spacing: 0;
       }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <p class="gost">переріз</p>
     <p class="osvl">переріз</p>
-</body>
+
+    <script>
+      function parsePathD(dString) {
+        const commands = dString.match(/([MLml])\s*([^MLml]*)/g);
+        if (!commands) {
+          return null; // Или выбросить ошибку, если формат строки всегда ожидается
+        }
+
+        const result = {};
+        const firstCommand = commands[0].trim().charAt(0).toUpperCase(); // Получаем первую команду (M)
+
+        if (firstCommand === "M") {
+          const numbers = commands[0]
+            .trim()
+            .substring(1)
+            .trim()
+            .split(/\s*,\s*|\s+/)
+            .map(Number);
+          if (numbers.length >= 2) {
+            result.x = numbers[0];
+            result.y = numbers[1];
+          }
+        }
+
+        // Проверяем наличие второй команды (l)
+        if (commands.length > 1) {
+          const secondCommand = commands[1].trim().charAt(0).toLowerCase();
+          if (secondCommand === "l") {
+            const numbers = commands[1]
+              .trim()
+              .substring(1)
+              .trim()
+              .split(/\s*,\s*|\s+/)
+              .map(Number);
+            if (numbers.length >= 2) {
+              result.dx = numbers[0];
+              result.dy = numbers[1];
+            }
+          }
+        }
+
+        return result;
+      }
+
+      // Пример использования:
+      const dAttribute = "M110 50 l-10 10";
+      const parsedData = parsePathD(dAttribute);
+      console.log(parsedData); // Выведет: { x: 110, y: 50, dx: -10, dy: 10 }
+
+      const dAttribute2 = "M50 20 L100 80";
+      const parsedData2 = parsePathD(dAttribute2);
+      console.log(parsedData2); // Выведет: { x: 50, y: 20 } (так как нет команды 'l')
+
+      const dAttribute3 = "m10 20";
+      const parsedData3 = parsePathD(dAttribute3);
+      console.log(parsedData3); // Выведет: { x: 10, y: 20, dx: 5, dy: 5 }
+    </script>
+  </body>
 </html>

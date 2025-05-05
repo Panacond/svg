@@ -1,0 +1,152 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
+
+@font-face {
+  font-family: "GOST Type B";
+  src: url("./GOST_2.304_A.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  /* Диапазон символов кириллицы */
+  font-display: swap;
+  /* Рекомендуется */
+}
+
+.axe {
+  fill: none;
+  stroke: red;
+  stroke-width: 0.1mm;
+  stroke-dasharray: 10, 2, 2, 2;
+}
+.hidden {
+  fill: none;
+  stroke: blue;
+  stroke-width: 0.1mm;
+  stroke-dasharray: 5, 2;
+}
+
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 0.2mm;
+}
+
+.hatch {
+  fill: url(#hatch-1);
+  stroke: black;
+  stroke-width: 0.2mm;
+}
+
+.hatch2 {
+  fill: white;
+  stroke: black;
+  stroke-width: 0.2mm;
+}
+
+.thin {
+  fill: none;
+  stroke: black;
+  stroke-width: 0.1mm;
+}
+
+.dim {
+  fill: none;
+  stroke: red;
+  stroke-width: 0.15mm;
+}
+
+.diametr {
+  fill: none;
+  stroke: red;
+  stroke-width: 0.1mm;
+}
+
+.designation{
+  fill: none;
+  stroke: purple;
+  stroke-width: 0.1mm;
+}
+.arrow {
+  fill: red;
+  stroke: red;
+  stroke-width: 0.15mm;
+}
+
+.text {
+  text-anchor: middle;
+  font-size: 0.3em;
+  /* font-family:Arial, Helvetica, sans-serif; */
+  /* font-family: 'Arial Condensed', Arial, sans-serif; */
+  font-family: "Oswald", "GOST Type B", "Arial", sans-serif;
+  letter-spacing: 0;
+}
+
+.stamp {
+  text-anchor: middle;
+  font-size: 0.45em;
+  font-family: "Oswald", "GOST Type B", "Arial", sans-serif;
+}
+
+
+.mirror {
+  text-anchor:end;
+  font-size: 0.3em;
+  font-family: "Oswald", "GOST Type B", "Arial", sans-serif;
+  letter-spacing: 0;
+}
+
+.extension {
+  /* text-anchor: middle; */
+  font-size: 0.3em;
+  font-family: "Oswald", "GOST Type B", "Arial", sans-serif;
+  letter-spacing: 0;
+}
+
+.scale1-2 {
+  transform: scale(0.5);
+}
+
+.scale1-2 .line,
+.scale1-2 .hatch,
+.scale1-2 .hatch2 {
+  stroke-width: calc(0.2mm * 2);
+  /* stroke: red;  */
+}
+
+.scale1-2 .dim,
+.scale1-2 .axe,
+.scale1-2 .hidden {
+  stroke-width: calc(0.1mm * 2);
+  stroke: orange; 
+}
+.scale1-2 text {
+  /* stroke-width: calc(0.2mm * 2); */
+  transform: scale(1);
+  font-size: calc(0.3em * 2);
+  fill: red;
+}
+
+.scale1-1 {
+  transform: scale(1);
+}
+
+.scale1-1 .line,
+.scale1-1 .hatch,
+.scale1-1 .hatch2 {
+  stroke-width: calc(0.2mm * 1);
+  /* stroke: red;  */
+}
+
+.scale1-1 .dim,
+.scale1-1 .axe,
+.scale1-1 .hidden {
+  stroke-width: calc(0.1mm * 1);
+  stroke: green; 
+}
+.scale1-1 text {
+  /* stroke-width: calc(0.2mm * 2); */
+  transform: scale(1);
+  font-size: calc(0.3em * 1);
+  fill: red;
+}
+
+
