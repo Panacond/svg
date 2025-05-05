@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Виведення в елемент P</title>
+  </head>
+  <body>
+    <p id="output">вівод:</p>
+
+    <script>
+      function output(a) {
+        document.getElementById("output").innerHTML += "<br>" + a;
+      }
+      const sum = 12 + 12;
+      console.log(sum);
+      output(sum);
+      output(sum);
+      output(sum);
+
+      const outputShort = (text) => {
+        document.getElementById("output").innerHTML += "<br>" + text;
+      };
+      outputShort(sum)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Автоматична заміна SVG елементів за класом</title>
+    <style>
+        svg {
+            width: 210mm;
+            height: 297mm;
+            border: 1px solid black;
+
+        }
+        .square {
+            fill: lightblue; /* Колір за замовчуванням для квадратів */
+        }
+        #square2 {
+            fill: lightcoral; /* Перевизначення кольору для конкретного квадрата */
+        }
+    </style>
+</head>
+<body>
+
+    <svg viewBox="0 0 210 297">
+        <circle id="myCircle" cx="50" cy="50" r="40" fill="yellow" />
+        <rect class="square" x="10" y="30" width="50" height="50" fill="red" />
+        <rect class="square" x="50" y="100" width="40" height="40" fill="green" />
+        <g id="group1" transform="translate(100, 50) scale(0.5)">
+            <rect class="square" x="60" y="150" width="40" height="40" fill="green" />
+        </g>
+    </svg>
+
+    <script>
+        function replaceSquaresWithColoredTriangles() {
+            const svgContainer = document.getElementsByTagName('svg')[0];
+            const squares = document.querySelectorAll('.square');
+            console.log(squares);
+
+            squares.forEach(square => {
+                // Отримуємо батьківський елемент квадрата
+                const parentElement = square.parentNode;
+
+                // Отримуємо розміри та координати квадрата (відносні до його системи координат)
+                const x = parseFloat(square.getAttribute('x'));
+                const y = parseFloat(square.getAttribute('y'));
+                const width = parseFloat(square.getAttribute('width'));
+                const height = parseFloat(square.getAttribute('height'));
+                const fill = square.getAttribute('fill');
+
+                // Створюємо елемент <path> для трикутника
+                const triangle = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                triangle.setAttribute('d', `M ${x} ${y} h30 v30 Z`);
+                triangle.setAttribute('fill', fill);
+                triangle.setAttribute('stroke', 'black');
+
+                // Створюємо текстові елементи для ширини та висоти
+                const textWidth = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                textWidth.setAttribute('x', x);
+                textWidth.setAttribute('y', y);
+                textWidth.setAttribute('font-size', '20');
+                textWidth.textContent = width;
+
+                const textHeight = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                textHeight.setAttribute('x', x);
+                textHeight.setAttribute('y', y + 20);
+                textHeight.setAttribute('font-size', '20');
+                textHeight.textContent = height;
+
+                // Додаємо новий трикутник та текст до батьківського елемента квадрата
+                parentElement.appendChild(triangle);
+                parentElement.appendChild(textWidth);
+                parentElement.appendChild(textHeight);
+
+                // Видаляємо квадрат
+                square.remove();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', replaceSquaresWithColoredTriangles);
+    </script>
+
+</body>
+</html>

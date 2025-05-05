@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Автоматична заміна SVG елементів за класом</title>
+    <style>
+        svg {
+            width: 300px;
+            height: 200px;
+            border: 1px solid black;
+        }
+        .square {
+            fill: lightblue; /* Колір за замовчуванням для квадратів */
+        }
+        #square2 {
+            fill: lightcoral; /* Перевизначення кольору для конкретного квадрата */
+        }
+    </style>
+</head>
+<body>
+
+    <svg id="svgContainer">
+        <circle id="myCircle" cx="50" cy="50" r="40" fill="yellow" />
+        <rect class="square" x="170" y="30" width="50" height="50" fill="red" />
+        <rect class="square" x="220" y="100" width="40" height="40" fill="green" />
+        <rect class="square" x="220" y="150" width="40" height="40" fill="green" />
+    </svg>
+
+    <script>
+        function replaceSquaresWithColoredTriangles() {
+            const svgContainer = document.getElementById('svgContainer');
+            const squares = document.querySelectorAll('.square');
+
+            squares.forEach(square => {
+                // Отримуємо розміри та координати квадрата
+                const x = parseFloat(square.getAttribute('x'));
+                const y = parseFloat(square.getAttribute('y'));
+                const width = parseFloat(square.getAttribute('width'));
+                const height = parseFloat(square.getAttribute('height'));
+                const fill = square.getAttribute('fill');
+
+                console.log(`Розміри квадрата (id: ${square.id}): width=${width}, height=${height}, x=${x}, y=${y}, fill=${fill}`);
+
+                // Визначаємо координати вершин трикутника на основі положення та розмірів квадрата
+                const trianglePoints = `${x + width / 2},${y} ${x + width},${y + height} ${x},${y + height}`;
+
+                // Створюємо HTML-фрагмент для нового трикутника з успадкованим кольором
+                const triangleHTML = `<polygon points="${trianglePoints}" fill="${fill}" />`;
+
+                // Додаємо новий трикутник перед видаленням квадрата (для збереження порядку, якщо це важливо)
+                svgContainer.insertAdjacentHTML('beforeend', triangleHTML);
+
+                // Видаляємо квадрат
+                square.remove();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', replaceSquaresWithColoredTriangles);
+    </script>
+
+</body>
+</html>

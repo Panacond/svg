@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Простий калькулятор з копіюванням в буфер</title>
+<style>
+  body {
+    font-family: sans-serif;
+  }
+  input {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Простий калькулятор</h1>
+
+<div>
+  <label for="expression">Введіть вираз:</label>
+  <input type="text" id="expression" name="expression">
+</div>
+
+<div>
+  <label for="result">Результат:</label>
+  <input type="text" id="result" name="result" readonly>
+</div>
+
+<script>
+  const expressionInput = document.getElementById('expression');
+  const resultInput = document.getElementById('result');
+
+  expressionInput.addEventListener('input', calculateResult);
+
+  function calculateResult() {
+    const expression = expressionInput.value;
+    try {
+      // eslint-disable-next-line no-eval
+      const result = eval(expression);
+      resultInput.value = result;
+    } catch (error) {
+      resultInput.value = 'Помилка';
+    }
+  }
+
+  resultInput.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'c') {
+      this.select();
+      document.execCommand('copy');
+      // Опціонально: можна додати повідомлення про копіювання
+      alert('Результат скопійовано в буфер обміну!');
+    }
+  });
+</script>
+
+</body>
+</html>
