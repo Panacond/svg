@@ -6,10 +6,17 @@
     <title>plate</title>
     <link rel="stylesheet" href="style.css" />
     <script src="./designations.js"></script>
+    <script src="./main.js"></script>
   </head>
 
   <body>
-    <svg id="draw" width="210mm" height="297mm" viewBox="0 0 210 297">
+    <svg
+      id="draw"
+      class="A4"
+      width="210mm"
+      height="297mm"
+      viewBox="0 0 210 297"
+    >
       <defs>
         <symbol id="hole" class="scale1-2">
           <g transform="translate(20, 20) ">
@@ -40,6 +47,23 @@
       </defs>
 
       <defs>
+        <symbol id="angle" class="scale1-2">
+          <g class="deg" transform="translate(0, 25)">
+            <g transform="translate(40, 0) rotate(-45)">
+              <path class="arrow" d="M0 0 v-10" />
+              <path class="arrow" d="M0 -7 l5 2 v-4" />
+            </g>
+            <g transform="translate(60, 0) rotate(45)">
+              <path class="arrow" d="M0 0 v-10" />
+              <path class="arrow" d="M0 -7 l-5 2 v-4" />
+            </g>
+            <path class="diametr" d="M35 -5 a20 20 0 0 1 30 0" />
+            <text x="50" y="-13" class="text">90&deg;</text>
+          </g>
+        </symbol>
+      </defs>
+
+      <defs>
         <pattern
           patternUnits="userSpaceOnUse"
           width="10"
@@ -60,66 +84,35 @@
         </pattern>
       </defs>
 
-      <g class="stamp">
-        <rect class="line" x="20" y="5" width="185" height="287" />
-        <rect class="line" x="0" y="0" width="210" height="297" />
-        <g transform="translate(20, 237)">
-          <rect class="line" x="0" y="0" width="185" height="55" />
-          <path
-            class="thin"
-            d="m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65"
-          />
-          <path
-            class="thin"
-            d="m7 0 v25 m10 -25 v55 m10 -55 v25 m10 -25 v55 m15 -55 v55 m13 -55 v55 "
-          />
-          <path
-            class="thin"
-            d="m65 10 h120 m0 15 h-120 m0 15 h120  m0 -10 h-50 m0 -5 v30 m15 -15 v-15 m15 0 v15"
-          />
-          <text x="130" y="7" text-anchor="middle" font-size="6">
-            00-00-0000-КА
-          </text>
-          <text x="3.5" y="24" class="stamp">Зм.</text>
-          <text x="12" y="24" class="stamp">Кільк.</text>
-          <text x="22" y="24" class="stamp">Арк.</text>
-          <text x="32" y="24" class="stamp">№док.</text>
-          <text x="44" y="24" class="stamp">Підпис</text>
-          <text x="58" y="24" class="stamp">Дата</text>
-          <text x="8" y="29" class="stamp">Розробив</text>
-          <text x="8" y="34" class="stamp">Перевірив</text>
-          <text x="8" y="39" class="stamp">Т. контр.</text>
-          <text x="8" y="49" class="stamp">Н. контр.</text>
-          <text x="8" y="54" class="stamp">Затвердив.</text>
-          <text x="142" y="29" class="stamp">Стадія</text>
-          <text x="157" y="29" class="stamp">Аркуш</text>
-          <text x="174" y="29" class="stamp">Аркушів</text>
+      <text x="20" y="5" class="tableKMD">tableKMD</text>
 
-        </g>
-      </g>
       <g class="scale1-2">
-        <g id="plan" transform="translate(100, 140)">
+        <g id="plan" transform="translate(120, 140)">
           <text x="100" y="-10" class="text">Деталь П1</text>
           <rect
             data-mark-det="П1"
-            class="line C235 t5"
+            class="line AISI204 t5 count3"
             x="0"
             y="0"
             width="200"
             height="100"
           />
 
-          <use href="#hole" x="0" y="0" viewBox="-10 -10 10 10" />
-          <use href="#hole" x="0" y="60" viewBox="-10 -10 10 10" />
-          <use href="#hole" x="160" y="60" viewBox="-10 -10 10 10" />
-          <use href="#hole" x="160" y="0" viewBox="-10 -10 10 10" />
+          <use href="#hole" x="0" y="0" />
+          <use href="#hole" x="0" y="60" />
+          <use href="#hole" x="160" y="60" />
+          <use href="#hole" x="160" y="0" />
 
-          <path class="dim" d="M0 0 v100 h-25" />
-          <path class="dim" d="M0 100 h200 v25" />
+          <path class="dim" d="M0 0 v100 h-45" />
+          <path class="dim" d="M10 0 v20 h-30" />
+          <path class="dim" d="M10 80 v20 h-30" />
+          <path class="dim" d="M0 100 h200 v45" />
+          <path class="dim" d="M0 80 h20 v40" />
+          <path class="dim" d="M180 80 h20 v40" />
         </g>
 
-        <g id="section" transform="translate(100, 340)">
-          <text x="100" y="-10" class="text">1-1</text>
+        <g id="section" transform="translate(120, 360)">
+          <text x="100" y="-30" class="text">1-1</text>
           <rect class="hatch" x="0" y="0" width="200" height="5" />
 
           <path class="hatch2" d="M 20 0 h-10 l5 5 h10 l 5 -5 z" />
@@ -132,10 +125,25 @@
           <path class="dim" d="M180 5 h20 V-20" />
 
           <path class="dim" d="M0 0 h200 V-45" />
+          <path class="dim" d="M0 0 v5 V-25" />
+
+          <use href="#angle" x="-30" y="-25" />
+          <use href="#angle" x="130" y="-25" />
         </g>
       </g>
     </svg>
 
-    <script></script>
+    <script>
+      const data = {
+        cipher: stamp.cipher,
+        address: stamp.address,
+        developer: stamp.developer,
+        inspector: stamp.inspector,
+        department: pages.department[1],
+        page: pages.pages[0].numer,
+        name: pages.pages[0].name,
+      };
+      addStamp(data)
+    </script>
   </body>
 </html>

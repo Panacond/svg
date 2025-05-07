@@ -11,6 +11,13 @@
   /* Рекомендуется */
 }
 
+body text {
+  fill: black;
+  text-anchor: middle;
+  font-size: 0.3em;
+  font-family: "Oswald", "GOST Type B", "Arial", sans-serif;
+}
+
 .axe {
   fill: none;
   stroke: red;
@@ -71,19 +78,12 @@
   stroke-width: 0.15mm;
 }
 
-.text {
-  text-anchor: middle;
-  font-size: 0.3em;
-  /* font-family:Arial, Helvetica, sans-serif; */
-  /* font-family: 'Arial Condensed', Arial, sans-serif; */
-  font-family: "Oswald", "GOST Type B", "Arial", sans-serif;
-  letter-spacing: 0;
+.stamp text {
+  font-size: 0.2em;
 }
 
-.stamp {
-  text-anchor: middle;
-  font-size: 0.45em;
-  font-family: "Oswald", "GOST Type B", "Arial", sans-serif;
+text.text {
+  font-size: 0.3em;
 }
 
 

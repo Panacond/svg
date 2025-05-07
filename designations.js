@@ -27,7 +27,7 @@ function parseDim(pathData) {
       length: Math.abs(length),
     });
   }
-  data = { x: result.x, y: result.y, c: commands };
+  let data = { x: result.x, y: result.y, c: commands };
   return data;
 }
 
@@ -51,11 +51,7 @@ function processElement(element) {
     const scaleStart = match[2];
     const scaleEnd = match[3];
     scale = match[3] / match[2];
-
-    console.log("Полное совпадение:", scaleFull);
-    console.log("scale:", scale);
   } else {
-    console.log("Совпадений не найдено.");
     scale = 1;
   }
   return scale;
@@ -71,7 +67,6 @@ function replaceSquaresWithColoredTriangles() {
     const scale = processElement(dim);
 
     const d = dim.getAttribute("d");
-    console.log(d);
 
     const data = parseDim(d);
     const angle = data.c[0].type === "v" ? 90 : 0;
@@ -105,20 +100,51 @@ function parsePlate() {
   const svgContainer = document.getElementsByTagName("svg")[0];
   const plates = document.querySelectorAll("rect");
   const designations = document.querySelectorAll(".dim");
-  console.log("name")
-  console.log(plates)
-  console.log(designations)
-  plates.forEach((plate)=>{
-    console.log("name")
-    console.log(plate.dataset.markDet)
-    if (plate.dataset.markDet){
-      console.log(plate.dataset.markDet)
+
+  plates.forEach((plate) => {
+    if (plate.dataset.markDet) {
+      console.log(plate.dataset.markDet);
     }
-  })
+  });
+}
+
+function getDataKmd() {
+  const steel = document.querySelectorAll(".C235, .AISI204")[0];
+  const classObj = steel.getAttribute("class");
+  const width = steel.getAttribute("width");
+  const height = steel.getAttribute("height");
+  console.log(steel.getAttribute("height"));
+  const markDet = steel.dataset.markDet;
+  const regex = /\bt([1-9]|1[0-9]|20)\b/;
+  const match = classObj.match(regex)[1];
+  const regex2 = /count\s*(\d+(\.\d+)?)/;
+  const count = classObj.match(regex2)[1];
+  const min = width > height ? height : width;
+  const max = width > height ? width : height;
+  let weight;
+  let mark;
+  if (classObj.includes("C235")) {
+    weight = (7.85 * match * min * max) / 10 ** 6;
+    mark = "C235";
+  }
+  if (classObj.includes("AISI204")) {
+    weight = (2.7 * match * min * max) / 10 ** 6;
+    mark = "AISI204";
+  }
+  const allWeight = weight * count;
+  return [
+    markDet,
+    "-" + match + "x" + min,
+    max,
+    count,
+    weight,
+    allWeight,
+    mark,
+  ];
 }
 
 function makeTableDetailKMD() {
-  const container = document.getElementById("draw");
+  const data = getDataKmd();
   const textElement = `
   <g id="head" transform="translate(20, 5)">
           <rect class="line" x="0" y="0" width="185" height="15" />
@@ -149,17 +175,79 @@ function makeTableDetailKMD() {
             d="M 15 0 v8 m 55 0 v-8 m20 0 v8 m15 0 v-8 m15 0 v 8 m20 0 v-8 m20 0 v8"
             class="thin"
           />
-          <text x="7.5" y="6" class="text">П1</text>
-          <text x="44" y="6" class="text">-5х50</text>
-          <text x="80" y="6" class="text">100</text>
-          <text x="98" y="6" class="text">10</text>
-          <text x="112" y="6" class="text">3.14</text>
-          <text x="130" y="6" class="text">6.28</text>
-          <text x="150" y="6" class="text">С235</text>
+          <text x="7.5" y="6" class="text">${data[0]}</text>
+          <text x="44" y="6" class="text">${data[1]}</text>
+          <text x="80" y="6" class="text">${data[2]}</text>
+          <text x="98" y="6" class="text">${data[3]}</text>
+          <text x="112" y="6" class="text">${data[4]}</text>
+          <text x="130" y="6" class="text">${data[5]}</text>
+          <text x="150" y="6" class="text">${data[6]}</text>
         </g>
         
       `;
-  container.innerHTML += textElement;
+
+  const table = document.querySelectorAll(".tableKMD");
+  table.forEach((table) => {
+    const parentElement = table.parentNode;
+    parentElement.insertAdjacentHTML("beforeend", textElement);
+    table.remove();
+  });
+}
+
+function addStamp(data) {
+  console.log("atrClass");
+
+  const svgContainer = document.getElementsByTagName("svg")[0];
+  const atrClass = svgContainer.getAttribute("class");
+  if (atrClass.includes("A4")) {
+    const textElement = `
+    <g class="stamp">
+        <rect class="line" x="20" y="5" width="185" height="287" />
+        <rect class="line" x="0" y="0" width="210" height="297" />
+        <g transform="translate(20, 237)">
+          <rect class="line" x="0" y="0" width="185" height="55" />
+          <path
+            class="thin"
+            d="m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65 m0 5 h-65 m0 5 h65"
+          />
+          <path
+            class="thin"
+            d="m7 0 v25 m10 -25 v55 m10 -55 v25 m10 -25 v55 m15 -55 v55 m13 -55 v55 "
+          />
+          <path
+            class="thin"
+            d="m65 10 h120 m0 15 h-120 m0 15 h120  m0 -10 h-50 m0 -5 v30 m15 -15 v-15 m15 0 v15"
+          />
+          <text x="130" y="7" text-anchor="middle" style="font-size:5">
+            ${data.cipher}
+          </text>
+          <text x="143" y="37" text-anchor="middle" style="font-size:5">Р</text>
+          <text x="157" y="37" text-anchor="middle" style="font-size:5">${data.page}</text>
+          <text x="125" y="20" >${data.address}</text>
+          <text x="101" y="34" class="text">${data.department}</text>
+          <text x="101" y="48" >${data.name}</text>
+          <text x="3.5" y="24" >Зм.</text>
+          <text x="12" y="24" >Кільк.</text>
+          <text x="22" y="24" >Арк.</text>
+          <text x="32" y="24" >№док.</text>
+          <text x="44" y="24" >Підпис</text>
+          <text x="58" y="24" >Дата</text>
+          <text x="8" y="29" >Розробив</text>
+          <text x="27" y="29" >${data.developer}</text>
+          <text x="8" y="34" >Перевірив</text>
+          <text x="27" y="34" >${data.inspector}</text>
+          <text x="8" y="39" >Т. контр.</text>
+          <text x="8" y="49" class="stamp">Н. контр.</text>
+          <text x="8" y="54" class="stamp">Затвердив.</text>
+          <text x="142" y="29" class="stamp">Стадія</text>
+          <text x="157" y="29" class="stamp">Аркуш</text>
+          <text x="174" y="29" >Аркушів</text>
+          <text x="160" y="53" >Департамент алюміньевих конструкцій</text>
+        </g>
+      </g>
+  `;
+  svgContainer.insertAdjacentHTML("beforeend", textElement);
+  }
 }
 
 function addDestions() {

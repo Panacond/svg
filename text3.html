@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    /* 4. Самый слабый: просто селектор по тегу */
+    text {
+      fill: gray;
+    }
+
+    /* 3. Селектор по классу */
+    .blue {
+      fill: blue;
+    }
+
+    /* 2. Селектор по ID (выше специфичность) */
+    #important {
+      fill: orange;
+    }
+  </style>
+</head>
+<body>
+  <svg width="500" height="200" style="border:1px solid lightgray">
+    <!-- Атрибут в теге (переопределяется CSS) -->
+    <text x="10" y="30" class="blue" id="important" fill="green" style="fill: red;">1. fill="green" (атрибут) → будет ЗАТЁНЕН CSS-селектором</text>
+
+    <!-- Селектор по тегу (text { fill: gray }) -->
+    <text x="10" y="60">2. Без всего → будет GRAY по тегу</text>
+
+    <!-- Класс имеет приоритет выше, чем селектор по тегу -->
+    <text x="10" y="90" class="blue">3. class="blue" → будет BLUE</text>
+
+    <!-- ID ещё выше -->
+    <text x="10" y="120" id="important">4. id="important" → будет ORANGE</text>
+
+    <!-- Inline-стиль всегда побеждает всё -->
+    <text x="10" y="150" style="fill: red;">5. style="fill: red;" → будет RED</text>
+  </svg>
+</body>
+</html>

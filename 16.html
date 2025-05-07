@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Зміна ширини SVG</title>
+    <style>
+      #mySVG {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <svg id="mySVG" width="300" height="150">
+      <rect
+        data-mark-det="П1"
+        class="line C235 t5"
+        x="0"
+        y="0"
+        width="200"
+        height="100"
+        fill="lightblue"
+      />
+      <rect
+        data-mark-det="П1"
+        class="change"
+        x="0"
+        y="120"
+        width="200"
+        height="10"
+        fill="lightblue"
+      />
+    </svg>
+
+    <button onclick="changeWidth()">Змінити ширину</button>
+
+    <script>
+      let currentWidth = 200;
+      const rectElement = document.querySelector("#mySVG rect");
+
+      function changeWidth() {
+        currentWidth += 20;
+        rectElement.setAttribute("width", currentWidth);
+      }
+
+      function initializeRectWidth(a) {
+        document.addEventListener("DOMContentLoaded", () => {
+          document.querySelector("#mySVG .change").setAttribute("width", a);
+        });
+      }
+      initializeRectWidth(100+50);
+    </script>
+  </body>
+</html>
