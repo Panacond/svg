@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Пример SVG transform-origin</title>
+  <style>
+    svg {
+      width: 300px;
+      height: 200px;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+
+  <svg viewBox="0 0 300 200">
+    <rect class="scale1-1" x="50" y="50" width="50" height="50" fill="lightblue" />
+    <circle class="scale2-1" cx="150" cy="100" r="30" fill="lightcoral" />
+    <polygon class="scale1-2" points="200,50 250,100 200,150" fill="lightgreen" />
+  </svg>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const svgElements = document.querySelectorAll('svg *[class^="scale"]');
+
+      svgElements.forEach(element => {
+        const bbox = element.getBBox();
+        element.style.transformOrigin = `${bbox.x}px ${bbox.y}px`;
+      });
+
+      function scaleElement(element) {
+        const elementClasses = element.classList;
+        const regex = /(scale)(\d+)-(\d+)/;
+        const match = elementClasses.value.match(regex);
+
+        let scale = 1;
+        if (match) {
+          scale = parseInt(match[3]) / parseInt(match[2]);
+          console.log("scale:", scale);
+        } else {
+          console.log("Совпадений не найдено.");
+        }
+        return scale;
+      }
+
+      function changeScale() {
+        const elements = document.querySelectorAll('svg *[class^="scale"]');
+
+        elements.forEach((element)=>{
+          const scale = scaleElement(element);
+          element.style.transform = `scale(${scale})`;
+        });
+      }
+
+      function listFunction() {
+        changeScale();
+      }
+
+      listFunction();
+    });
+  </script>
+
+</body>
+</html>

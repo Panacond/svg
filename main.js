@@ -8,6 +8,6 @@ const pages = {
   department: ["Монтажные схемы", "СГИ"],
   pages: [
     { numer: "1", name: "Деталь П1" },
-    { numer: "2", name: "Деталь П2" },
+    { numer: "2", name: "Уголок Н2" },
   ],
 };

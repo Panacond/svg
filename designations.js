@@ -58,39 +58,69 @@ function processElement(element) {
 }
 
 function replaceSquaresWithColoredTriangles() {
-  const svgContainer = document.getElementsByTagName("svg")[0];
-
   const dimentions = document.querySelectorAll(".dim");
 
   dimentions.forEach((dim) => {
     const parentElement = dim.parentNode;
     const scale = processElement(dim);
-
     const d = dim.getAttribute("d");
 
     const data = parseDim(d);
     const angle = data.c[0].type === "v" ? 90 : 0;
-    const triangleHTML = `<g transform="rotate(${angle},${data.x},${data.y} )">
-      <path d="M ${data.x} ${data.y} v${data.c[1].length + 2} v-2 h${
-      data.c[0].length
-    } v2 v${-data.c[1].length - 2}" class="dim"/>
-      <path class="anno" d="M ${data.x} ${
-      data.y + data.c[1].length
-    } l4 1 v-2 z" fill="red" transform="scale(${scale})"
-       transform-origin="${data.x} ${data.y + data.c[1].length}"/>
-      <path class="anno" d="M ${data.x + data.c[0].length} ${
-      data.y + data.c[1].length
-    } l-4 1 v-2 z" fill="red" transform="scale(${scale})"
-       transform-origin="${data.x + data.c[0].length} ${
-      data.y + data.c[1].length
-    }" ;/>/>
-      <text class="text" id="dynamicText" x="${
-        data.x + data.c[0].length / 2
-      }" y="${data.y + data.c[1].length - 2 * scale}">${
-      data.c[0].length
-    }</text></g>`;
 
-    // // Додаємо новий трикутник перед видаленням квадрата (для збереження порядку, якщо це важливо)
+    let triangleHTML;
+
+    if (data.c[0].length > 10) {
+      triangleHTML = `<g transform="rotate(${angle},${data.x},${data.y} )">
+    <path d="M ${data.x} ${data.y} v${data.c[1].length + 2 * scale} v${
+        -2 * scale
+      } h${data.c[0].length} v${2 * scale} v${
+        -data.c[1].length - 2 * scale
+      }" class="dim"/>
+    
+    <path class="anno" d="M ${data.x} ${
+        data.y + data.c[1].length
+      } l4 1 v-2 z" fill="red" transform="scale(${scale})"
+     transform-origin="${data.x} ${data.y + data.c[1].length}"/>
+    
+     <path class="anno" d="M ${data.x + data.c[0].length} ${
+        data.y + data.c[1].length
+      } l-4 1 v-2 z" fill="red" transform="scale(${scale})"
+     transform-origin="${data.x + data.c[0].length} ${
+        data.y + data.c[1].length
+      }" ;/>
+    
+     <text class="text" id="dynamicText" x="${
+       data.x + data.c[0].length / 2
+     }" y="${data.y + data.c[1].length - 2 * scale}"
+     >${data.c[0].length}</text>
+      </g>`;
+    } else {
+      triangleHTML = `<g transform="rotate(${angle},${data.x},${data.y} )">
+    <path d="M ${data.x} ${data.y} v${data.c[1].length + 2 * scale} v${
+        -2 * scale
+      } h${-5 * scale} h${5 * scale} h${data.c[0].length} h${10 * scale} h${
+        -10 * scale
+      } v${2 * scale}  v${-data.c[1].length - 2}" class="dim"/>
+   
+    <path class="anno" d="M ${data.x} ${
+        data.y + data.c[1].length
+      } l-4 1 v-2 z" fill="red" transform="scale(${scale})"
+     transform-origin="${data.x} ${data.y + data.c[1].length}"/>
+
+    <path class="anno" d="M ${data.x + data.c[0].length} ${
+        data.y + data.c[1].length
+      } l4 1 v-2 z" fill="red" transform="scale(${scale})"
+      transform-origin="${data.x + data.c[0].length} ${
+        data.y + data.c[1].length
+      }" ;/>
+
+    <text class="text" id="dynamicText" x="${
+      data.x + 7 * scale + data.c[0].length / 2
+    }" y="${data.y + data.c[1].length - 2 * scale}">${data.c[0].length}</text>
+      </g>`;
+    }
+
     parentElement.insertAdjacentHTML("beforeend", triangleHTML);
     dim.remove();
   });
@@ -128,7 +158,7 @@ function getDataKmd() {
     mark = "C235";
   }
   if (classObj.includes("AISI204")) {
-    weight = (2.7 * match * min * max) / 10 ** 6;
+    weight = Math.round(((2.7 * match * min * max) / 10 ** 6) * 100) / 100;
     mark = "AISI204";
   }
   const allWeight = weight * count;
@@ -246,14 +276,61 @@ function addStamp(data) {
         </g>
       </g>
   `;
-  svgContainer.insertAdjacentHTML("beforeend", textElement);
+    svgContainer.insertAdjacentHTML("beforeend", textElement);
   }
 }
 
-function addDestions() {
+function scaleElement(element) {
+  let currentElement = element.parentNode;
+  const parentClasses = [];
+  parentClasses.push(...element.classList);
+  const regex = /(scale)(\d+)-(\d+)/;
+  const match = parentClasses.join(", ").match(regex);
+  let scale;
+
+  if (match) {
+    scale = match[3] / match[2];
+    console.log("scale:", scale);
+  } else {
+    console.log("Совпадений не найдено.");
+    scale = 1;
+  }
+  return scale;
+}
+
+function changeScale() {
+  const elements = document.querySelectorAll('svg *[class^="scale"]');
+  elements.forEach((element) => {
+    const scale = scaleElement(element);
+    element.style.transform = `scale(${1 / scale})`;
+    const bbox = element.getBBox();
+    element.style.transformOrigin = `${bbox.x}px ${bbox.y}px`;
+    const elements = element.querySelectorAll('g[class^="scale"] .dim');
+    elements.forEach((element) => {
+      element.style.strokeWidth = `${0.1 * scale}mm`;
+    });
+    const lines = element.querySelectorAll('g[class^="scale"] .line');
+    lines.forEach((element) => {
+      element.style.strokeWidth = `${0.2 * scale}mm`;
+      // element.style.stroke="red";
+    });
+    const texts = element.querySelectorAll('g[class^="scale"] .text');
+    texts.forEach((element) => {
+      element.style.fontSize = `${0.3 * scale}em`;
+    });
+    const axes = element.querySelectorAll('g[class^="scale"] .axe');
+    axes.forEach((element) => {
+      element.style.strokeWidth = `${0.1 * scale}mm`;
+
+    });
+  });
+}
+
+function listFunction() {
   replaceSquaresWithColoredTriangles();
   makeTableDetailKMD();
   parsePlate();
+  changeScale();
 }
 
-document.addEventListener("DOMContentLoaded", addDestions);
+document.addEventListener("DOMContentLoaded", listFunction);

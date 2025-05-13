@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Уголок</title>
+    <link rel="stylesheet" href="style2.css" />
+    <script src="./designations.js"></script>
+    <script src="./main.js"></script>
+  </head>
+  <body>
+    <svg
+      id="draw"
+      class="A4"
+      width="210mm"
+      height="297mm"
+      viewBox="0 0 210 297"
+    >
+      <defs>
+        <pattern
+          patternUnits="userSpaceOnUse"
+          width="10"
+          height="10"
+          x="0"
+          y="0"
+          patternTransform="rotate(45) scale(0.5)"
+          id="hatch-1"
+        >
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="10"
+            stroke="blue"
+            stroke-width="1"
+          ></line>
+        </pattern>
+      </defs>
+
+      <text x="20" y="5" class="tableKMD">tableKMD</text>
+
+      <g class="scale2-1">
+        <g id="det" transform="translate(60, 20)">
+          <text x="10" y="15" class="text">Н2</text>
+          <path class="axe" d="M0 50 h14 v-34" />
+          <path
+            class="line"
+            d="M0 50 h10 a 4 4 1 0 0 4 -4 v-30 h-2 v30 a 2 2 0 0 1 -2 2 h-10 z"
+          />
+          <path class="dim" d="M0 50 h14 h5" />
+          <path class="dim" d="M14 16 v34 h30" />
+          <path class="dim" d="M0 48 v2 h-10" />
+        </g>
+      </g>
+
+      <g transform="translate(80, 120)">
+        <g class="scale2-1">
+          <text x="25" y="-2" class="text">Розгортка</text>
+
+          <rect
+            data-mark-det="Н2"
+            class="line AISI204 t2 count3"
+            x="0"
+            y="0"
+            width="34"
+            height="40"
+          />
+          <path class="axe" d="M12 0 v40 h-20" />
+
+          <path class="dim" d="M0 0 v40 h-10" />
+          <path class="dim" d="M0 40 h12 h-5" />
+
+          <path class="dim" d="M0 40 h34 h-10" />
+        </g>
+      </g>
+    </svg>
+    <script>
+      const data = {
+        cipher: stamp.cipher,
+        address: stamp.address,
+        developer: stamp.developer,
+        inspector: stamp.inspector,
+        department: pages.department[1],
+        page: pages.pages[1].numer,
+        name: pages.pages[1].name,
+      };
+      addStamp(data);
+    </script>
+  </body>
+</html>
