@@ -43,6 +43,12 @@ body text {
   stroke-width: 0.2mm;
 }
 
+.hatch1 {
+  fill: url(#hatch-2);
+  stroke: black;
+  stroke-width: 0.2mm;
+}
+
 .hatch2 {
   fill: white;
   stroke: black;
@@ -58,7 +64,7 @@ body text {
 .dim {
   fill: none;
   stroke: red;
-  stroke-width: 0.15mm;
+  stroke-width: 0.1mm;
 }
 
 .diametr {
@@ -75,7 +81,7 @@ body text {
 .arrow {
   fill: red;
   stroke: red;
-  stroke-width: 0.15mm;
+  stroke-width: 0.1mm;
 }
 .anno {
   fill: purple;
@@ -104,52 +110,6 @@ text.text {
   letter-spacing: 0;
 }
 
-.scale1-2 {
-  transform: scale(0.5);
-}
 
-.scale1-2 .line,
-.scale1-2 .hatch,
-.scale1-2 .hatch2 {
-  stroke-width: calc(0.2mm * 2);
-  /* stroke: red;  */
-}
-
-.scale1-2 .dim,
-.scale1-2 .axe,
-.scale1-2 .hidden {
-  stroke-width: calc(0.1mm * 2);
-  stroke: orange; 
-}
-.scale1-2 text {
-  /* stroke-width: calc(0.2mm * 2); */
-  transform: scale(1);
-  font-size: calc(0.3em * 2);
-  fill: red;
-}
-
-.scale1-1 {
-  transform: scale(1);
-}
-
-.scale1-1 .line,
-.scale1-1 .hatch,
-.scale1-1 .hatch2 {
-  stroke-width: calc(0.2mm * 1);
-  /* stroke: red;  */
-}
-
-.scale1-1 .dim,
-.scale1-1 .axe,
-.scale1-1 .hidden {
-  stroke-width: calc(0.1mm * 1);
-  stroke: purple; 
-}
-.scale1-1 text {
-  /* stroke-width: calc(0.2mm * 2); */
-  transform: scale(1);
-  font-size: calc(0.3em * 1);
-  fill: red;
-}
 
 
