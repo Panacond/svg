@@ -97,7 +97,7 @@
 
           let triangleHTML;
 
-          if (data.c[0].length > 10) {
+          if (data.c[0].length/scale > 8) {
             triangleHTML = `<g transform="rotate(${angle},${data.x},${
               data.y
             } )">
@@ -149,7 +149,7 @@
             }" ;/>
 
           <text class="text" id="dynamicText" x="${
-            data.x + 7 * scale + data.c[0].length / 2
+            data.x + 8 * scale + data.c[0].length
           }" y="${data.y + data.c[1].length - 2 * scale}">${
               data.c[0].length
             }</text>

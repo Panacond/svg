@@ -22,30 +22,20 @@
 
 <body>
     <p>part of circle by path</p>
-    <svg width="100mm" height="100mm">
+    <svg width="100mm" height="60mm">
         <path d="M 10 10 A 100 100 0 0 1 110 110" stroke="blue" stroke-width="3" fill="none" />
         <circle cx="10" cy="110" r="100" fill="none" stroke="red" />
     </svg>
-    <p>part of circle by path</p>
-    <svg width="200" height="200">
-        <path d="M 100 20 A 80 80 0 0 1 180 100" stroke="blue" stroke-width="3" fill="none" />
-        <path d="M 100 20 Q 180 20 180 100" stroke="red" stroke-width="3" fill="none" stroke-dasharray="5,5" />
 
-        <text x="10" y="50" font-size="12" fill="blue">Точна дуга (A)</text>
-        <text x="10" y="70" font-size="12" fill="red">Наближення (Q)</text>
+    <p> simple example</p>
+    <svg width="100mm" height="30mm" viewBox="0 0 100 30">
+        <path class="green" d="M10 10 l20 20" />
+        <path class="green" d="M20 10 h30" />
+        <path class="red" d="M60 10 v10" />
     </svg>
     <p>шпилька</p>
     <svg width="100mm" height="100mm">
         <path d="M 20 20 a 10 10 0 0 1 20 0 V100 a 10 10 0 0 1 -20 0 v-10" stroke="blue" stroke-width="3" fill="none" />
-    </svg>
-    <p>example</p>
-    <svg width="100mm" height="100mm" viewBox="0 0 100 100">
-        <path class="green" d="M10 10 L20 30" />
-        <path class="green" d="M10 15 L20 10" />
-        <path class="red" d="M10 10 l10 10" />
-        <path class="green" d="M10 10 h20" />
-        <path class="red" d="M10 50 v20" />
-
     </svg>
 </body>
 

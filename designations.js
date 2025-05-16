@@ -70,7 +70,7 @@ function replaceSquaresWithColoredTriangles() {
 
     let triangleHTML;
 
-    if (data.c[0].length > 10) {
+    if (data.c[0].length/scale > 8) {
       triangleHTML = `<g transform="rotate(${angle},${data.x},${data.y} )">
     <path d="M ${data.x} ${data.y} v${data.c[1].length + 2 * scale} v${
         -2 * scale
@@ -116,7 +116,7 @@ function replaceSquaresWithColoredTriangles() {
       }" ;/>
 
     <text class="text" id="dynamicText" x="${
-      data.x + 7 * scale + data.c[0].length / 2
+      data.x + 7 * scale + data.c[0].length
     }" y="${data.y + data.c[1].length - 2 * scale}">${data.c[0].length}</text>
       </g>`;
     }
@@ -224,9 +224,16 @@ function makeTableDetailKMD() {
   });
 }
 
-function addStamp(data) {
-  console.log("atrClass");
-
+function addStamp(object, page) {
+  let data ={
+    cipher: object.cipher,
+    address: object.address,
+    developer: object.developer,
+    inspector: object.inspector,
+    department: page.department,
+    page: page.numer,
+    name: page.name,
+  }
   const svgContainer = document.getElementsByTagName("svg")[0];
   const atrClass = svgContainer.getAttribute("class");
   if (atrClass.includes("A4")) {
@@ -321,7 +328,14 @@ function changeScale() {
     const axes = element.querySelectorAll('g[class^="scale"] .axe');
     axes.forEach((element) => {
       element.style.strokeWidth = `${0.1 * scale}mm`;
-
+    });
+    const arrow = element.querySelectorAll('g[class^="scale"] .arrow');
+    arrow.forEach((element) => {
+      element.style.strokeWidth = `${0.1 * scale}mm`;
+    });
+    const diametr = element.querySelectorAll('g[class^="scale"] .diametr');
+    diametr.forEach((element) => {
+      element.style.strokeWidth = `${0.1 * scale}mm`;
     });
   });
 }

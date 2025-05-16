@@ -43,6 +43,12 @@ body text {
   stroke-width: 0.2mm;
 }
 
+.hatch1 {
+  fill: url(#hatch-2);
+  stroke: black;
+  stroke-width: 0.2mm;
+}
+
 .hatch2 {
   fill: white;
   stroke: black;
@@ -58,7 +64,7 @@ body text {
 .dim {
   fill: none;
   stroke: red;
-  stroke-width: 0.15mm;
+  stroke-width: 0.1mm;
 }
 
 .diametr {
@@ -75,7 +81,7 @@ body text {
 .arrow {
   fill: red;
   stroke: red;
-  stroke-width: 0.15mm;
+  stroke-width: 0.1mm;
 }
 .anno {
   fill: purple;
