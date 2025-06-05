@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Чертеж Дома с Спецификацией</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.8.1/two.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        display: block;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+      }
+      #drawing-container {
+        background-color: white;
+        border: 1px solid #ccc;
+      }
+      #spec-container {
+        margin-left: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        background-color: white;
+        font-family: sans-serif;
+        font-size: 14px;
+      }
+      #spec-container h3 {
+        margin-top: 0;
+      }
+      #spec-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      #spec-table th,
+      #spec-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      #spec-table th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="drawing-container"></div>
+    <div id="spec-container">
+      <h3>Спецификация</h3>
+      <table id="spec-table">
+        <thead>
+          <tr>
+            <th>Элемент</th>
+            <th>Ширина (px)</th>
+            <th>Высота (px)</th>
+            <th>Кол-во</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script>
+      // Получаем контейнер для чертежа
+      const elem = document.getElementById("drawing-container");
+      const params = { width: 800, height: 600 };
+      const two = new Two(params).appendTo(elem);
+
+      // Массив для хранения данных спецификации
+      const specificationData = [];
+      let windowCounter = 0; // Счетчик для окон, чтобы давать им уникальные имена
+
+      // --- Вспомогательные функции для создания элементов ---
+
+      /**
+       * Функция для создания прямоугольного элемента (дом, окно)
+       * @param {number} x - X-координата центра
+       * @param {number} y - Y-координата центра
+       * @param {number} width - Ширина
+       * @param {number} height - Высота
+       * @param {string} name - Название элемента для спецификации
+       * @param {string} fillColor - Цвет заливки
+       * @param {string} strokeColor - Цвет обводки
+       * @returns {Two.Rectangle} Созданный прямоугольник
+       */
+      function createRectangleElement(
+        x,
+        y,
+        width,
+        height,
+        name,
+        fillColor = "transparent",
+        strokeColor = "black"
+      ) {
+        const rect = two.makeRectangle(x, y, width, height);
+        rect.fill = fillColor;
+        rect.stroke = strokeColor;
+        rect.linewidth = 2;
+        // Добавляем данные в спецификацию
+        specificationData.push({
+          name: name,
+          width: width,
+          height: height,
+          count: 1,
+        });
+        return rect;
+      }
+
+      /**
+       * Функция для создания треугольной крыши
+       * @param {number} x1 - X-координата первой вершины
+       * @param {number} y1 - Y-координата первой вершины
+       * @param {number} x2 - X-координата второй вершины
+       * @param {number} y2 - Y-координата второй вершины
+       * @param {number} x3 - X-координата третьей вершины
+       * @param {number} y3 - Y-координата третьей вершины
+       * @param {string} name - Название элемента для спецификации
+       * @param {string} fillColor - Цвет заливки
+       * @param {string} strokeColor - Цвет обводки
+       * @returns {Two.Path} Созданный треугольник
+       */
+      function createTriangleElement(
+        x1,
+        y1,
+        x2,
+        y2,
+        x3,
+        y3,
+        name,
+        fillColor = "transparent",
+        strokeColor = "black"
+      ) {
+        const triangle = two.makePath(x1, y1, x2, y2, x3, y3);
+        triangle.fill = fillColor;
+        triangle.stroke = strokeColor;
+        triangle.linewidth = 2;
+        triangle.closed = true;
+        // Поскольку треугольник не имеет простых ширины/высоты, можно использовать bounding box или просто указать "n/a"
+        const bounds = triangle.getBoundingClientRect();
+        specificationData.push({
+          name: name,
+          width: bounds.width,
+          height: bounds.height,
+          count: 1,
+        });
+        return triangle;
+      }
+
+      /**
+       * Функция для создания выноски к элементу
+       * @param {Two.Shape} element - Элемент, к которому делается выноска
+       * @param {string} labelText - Текст выноски (например, "О1")
+       * @param {number} offset - Смещение линии от элемента
+       * @param {number} lineLength - Длина горизонтальной части линии
+       */
+      function createLeader(element, labelText, offset = 30, lineLength = 50) {
+        const bounds = element.getBoundingClientRect();
+        const startX = bounds.right;
+        const startY = bounds.top + bounds.height / 2;
+
+        const line1X = startX + offset;
+        const line1Y = startY;
+
+        const line2X = line1X + lineLength;
+        const line2Y = startY;
+
+        // Линия от элемента
+        const line1 = two.makeLine(startX, startY, line1X, line1Y);
+        line1.stroke = "gray";
+        line1.linewidth = 1;
+
+        // Горизонтальная линия
+        const line2 = two.makeLine(line1X, line1Y, line2X, line2Y);
+        line2.stroke = "gray";
+        line2.linewidth = 1;
+
+        // Текст выноски
+        const text = two.makeText(labelText, line2X + 5, line2Y);
+        text.alignment = "left";
+        text.fill = "black";
+        text.size = 12;
+
+        // Группируем элементы выноски
+        const leaderGroup = two.makeGroup(line1, line2, text);
+        return leaderGroup;
+      }
+
+      /**
+       * Функция для создания размера (горизонтального или вертикального)
+       * @param {number} x1 - X-координата начала первой выносной линии
+       * @param {number} y1 - Y-координата начала первой выносной линии
+       * @param {number} x2 - X-координата начала второй выносной линии
+       * @param {number} y2 - Y-координата начала второй выносной линии
+       * @param {number} dimLineOffset - Смещение размерной линии от выносных линий
+       * @param {string} orientation - 'horizontal' или 'vertical'
+       * @param {number} value - Значение размера для отображения
+       */
+      function createDimension(
+        x1,
+        y1,
+        x2,
+        y2,
+        dimLineOffset,
+        orientation,
+        value
+      ) {
+        const lineStyle = { stroke: "gray", linewidth: 1 };
+        const arrowSize = 5;
+
+        let textX, textY;
+        let dimLine1, dimLine2, dimLine;
+        let arrows = []; // Array to hold arrow lines
+
+        if (orientation === "horizontal") {
+          // Выносные линии
+          dimLine1 = two.makeLine(x1, y1, x1, y1 + dimLineOffset);
+          dimLine2 = two.makeLine(x2, y2, x2, y2 + dimLineOffset);
+
+          // Размерная линия
+          dimLine = two.makeLine(
+            x1,
+            y1 + dimLineOffset,
+            x2,
+            y2 + dimLineOffset
+          );
+
+          // Стрелки
+          const arrow1_1 = two.makeLine(
+            x1,
+            y1 + dimLineOffset,
+            x1 + arrowSize,
+            y1 + dimLineOffset - arrowSize
+          );
+          const arrow1_2 = two.makeLine(
+            x1,
+            y1 + dimLineOffset,
+            x1 + arrowSize,
+            y1 + dimLineOffset + arrowSize
+          );
+          const arrow2_1 = two.makeLine(
+            x2,
+            y2 + dimLineOffset,
+            x2 - arrowSize,
+            y2 + dimLineOffset - arrowSize
+          );
+          const arrow2_2 = two.makeLine(
+            x2,
+            y2 + dimLineOffset,
+            x2 - arrowSize,
+            y2 + dimLineOffset + arrowSize
+          );
+          arrows = [arrow1_1, arrow1_2, arrow2_1, arrow2_2]; // Collect arrows in an array
+
+          textX = (x1 + x2) / 2;
+          textY = y1 + dimLineOffset - 10; // Над размерной линией
+        } else if (orientation === "vertical") {
+          // Выносные линии
+          dimLine1 = two.makeLine(x1, y1, x1 + dimLineOffset, y1);
+          dimLine2 = two.makeLine(x2, y2, x2 + dimLineOffset, y2);
+
+          // Размерная линия
+          dimLine = two.makeLine(
+            x1 + dimLineOffset,
+            y1,
+            x2 + dimLineOffset,
+            y2
+          );
+
+          // Стрелки
+          const arrow1_1 = two.makeLine(
+            x1 + dimLineOffset,
+            y1,
+            x1 + dimLineOffset - arrowSize,
+            y1 + arrowSize
+          );
+          const arrow1_2 = two.makeLine(
+            x1 + dimLineOffset,
+            y1,
+            x1 + dimLineOffset + arrowSize,
+            y1 + arrowSize
+          );
+          const arrow2_1 = two.makeLine(
+            x2 + dimLineOffset,
+            y2,
+            x2 + dimLineOffset - arrowSize,
+            y2 - arrowSize
+          );
+          const arrow2_2 = two.makeLine(
+            x2 + dimLineOffset,
+            y2,
+            x2 + dimLineOffset + arrowSize,
+            y2 - arrowSize
+          );
+          arrows = [arrow1_1, arrow1_2, arrow2_1, arrow2_2]; // Collect arrows in an array
+
+          textX = x1 + dimLineOffset + 10; // Сбоку от размерной линии
+          textY = (y1 + y2) / 2;
+        }
+
+        // Apply style to each arrow individually
+        arrows.forEach((a) => Object.assign(a, lineStyle));
+
+        Object.assign(dimLine1, lineStyle);
+        Object.assign(dimLine2, lineStyle);
+        Object.assign(dimLine, lineStyle);
+
+        const text = two.makeText(value.toString(), textX, textY);
+        text.alignment = "center";
+        text.fill = "black";
+        text.size = 12;
+
+        // Group all dimension elements (lines, arrows, text)
+        const dimensionGroup = two.makeGroup(
+          dimLine1,
+          dimLine2,
+          dimLine,
+          text,
+          ...arrows
+        );
+        return dimensionGroup;
+      }
+      // --- Рисуем дом ---
+
+      // Дом (квадратик)
+      const houseWidth = 300;
+      const houseHeight = 200;
+      const house = createRectangleElement(
+        two.width / 2,
+        two.height / 2 + 50,
+        houseWidth,
+        houseHeight,
+        "Дом",
+        "#e0ffe0",
+        "black"
+      );
+
+      // Крыша (треугольник)
+      const roofHeight = 100;
+      const roof = createTriangleElement(
+        house.translation.x - houseWidth / 2,
+        house.translation.y - houseHeight / 2, // Левая нижняя точка крыши
+        house.translation.x + houseWidth / 2,
+        house.translation.y - houseHeight / 2, // Правая нижняя точка крыши
+        house.translation.x,
+        house.translation.y - houseHeight / 2 - roofHeight, // Верхняя точка крыши
+        "Крыша",
+        "#ffc0cb",
+        "black"
+      );
+
+      // Окно (отдельным элементом, квадратиком)
+      function createAndPlaceWindow(x, y, width, height) {
+        windowCounter++;
+        const windowName = `Окно О${windowCounter}`;
+        const window = createRectangleElement(
+          x,
+          y,
+          width,
+          height,
+          windowName,
+          "#add8e6",
+          "blue"
+        );
+        // Добавляем выноску к окну
+        createLeader(window, windowName);
+        return window;
+      }
+
+      const window1 = createAndPlaceWindow(
+        house.translation.x - 70,
+        house.translation.y + 50,
+        60,
+        80
+      );
+      const window2 = createAndPlaceWindow(
+        house.translation.x + 70,
+        house.translation.y + 50,
+        60,
+        80
+      );
+
+      // --- Добавляем размеры ---
+
+      // Размеры дома
+      // Горизонтальный размер дома
+      createDimension(
+        house.translation.x - houseWidth / 2,
+        house.translation.y + houseHeight / 2,
+        house.translation.x + houseWidth / 2,
+        house.translation.y + houseHeight / 2,
+        50,
+        "horizontal",
+        houseWidth
+      );
+
+      // Вертикальный размер дома
+      createDimension(
+        house.translation.x + houseWidth / 2,
+        house.translation.y - houseHeight / 2,
+        house.translation.x + houseWidth / 2,
+        house.translation.y + houseHeight / 2,
+        50,
+        "vertical",
+        houseHeight
+      );
+
+      // Размеры окна (например, для первого окна)
+      // Горизонтальный размер окна 1
+      createDimension(
+        window1.translation.x - window1.width / 2,
+        window1.translation.y - window1.height / 2,
+        window1.translation.x + window1.width / 2,
+        window1.translation.y - window1.height / 2,
+        -30,
+        "horizontal",
+        window1.width
+      );
+      // Вертикальный размер окна 1
+      createDimension(
+        window1.translation.x - window1.width / 2,
+        window1.translation.y - window1.height / 2,
+        window1.translation.x - window1.width / 2,
+        window1.translation.y + window1.height / 2,
+        -30,
+        "vertical",
+        window1.height
+      );
+
+      // --- Обновляем Two.js и заполняем спецификацию ---
+
+      two.update();
+
+      // Заполняем таблицу спецификации
+      const specTableBody = document
+        .getElementById("spec-table")
+        .getElementsByTagName("tbody")[0];
+
+      // Агрегируем количество для одинаковых элементов
+      const aggregatedSpecData = {};
+      specificationData.forEach((item) => {
+        const key = `${item.name}-${item.width}-${item.height}`;
+        if (aggregatedSpecData[key]) {
+          aggregatedSpecData[key].count += item.count;
+        } else {
+          aggregatedSpecData[key] = { ...item };
+        }
+      });
+
+      Object.values(aggregatedSpecData).forEach((item) => {
+        const row = specTableBody.insertRow();
+        row.insertCell().textContent = item.name;
+        row.insertCell().textContent =
+          item.width === "n/a" ? "n/a" : item.width.toFixed(0);
+        row.insertCell().textContent =
+          item.height === "n/a" ? "n/a" : item.height.toFixed(0);
+        row.insertCell().textContent = item.count;
+      });
+    </script>
+  </body>
+</html>
